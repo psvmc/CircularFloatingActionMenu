@@ -256,10 +256,8 @@ public class FloatingActionMenu {
      * @param animated
      */
     public void hide(boolean animated){
-        if(animated){
-            if(isOpen()){
-                close(true);
-            }
+        if(isOpen()){
+            close(animated);
         }
         this.mainActionView.setVisibility(View.INVISIBLE);
     }
