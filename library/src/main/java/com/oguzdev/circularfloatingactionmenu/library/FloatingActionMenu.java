@@ -16,6 +16,7 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.OrientationEventListener;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -55,6 +56,8 @@ public class FloatingActionMenu {
     private boolean systemOverlay;
     /** a simple layout to contain all the sub action views in the system overlay mode */
     private FrameLayout overlayContainer;
+
+    private boolean isShow = true;
 
     private OrientationEventListener orientationListener;
 
@@ -126,8 +129,7 @@ public class FloatingActionMenu {
 
         if(systemOverlay) {
             orientationListener = new OrientationEventListener(mainActionView.getContext(), SensorManager.SENSOR_DELAY_UI) {
-                private int lastState = -1;
-
+                private int lastState = Surface.ROTATION_0;
                 public void onOrientationChanged(int orientation) {
 
                     Display display = getWindowManager().getDefaultDisplay();
@@ -256,17 +258,23 @@ public class FloatingActionMenu {
      * @param animated
      */
     public void hide(boolean animated){
-        if(isOpen()){
-            close(animated);
+        if(isShow){
+            if(isOpen()){
+                close(animated);
+            }
+            this.mainActionView.setVisibility(View.INVISIBLE);
+            this.isShow = false;
         }
-        this.mainActionView.setVisibility(View.INVISIBLE);
     }
 
     /**
      * 显示
      */
     public void show(){
-        this.mainActionView.setVisibility(View.VISIBLE);
+        if(!isShow){
+            this.mainActionView.setVisibility(View.VISIBLE);
+            this.isShow = true;
+        }
     }
 
     /**
@@ -492,7 +500,10 @@ public class FloatingActionMenu {
     }
 
     public void detachOverlayContainer() {
-        getWindowManager().removeView(overlayContainer);
+        if(null != overlayContainer){
+            getWindowManager().removeView(overlayContainer);
+        }
+
     }
 
     public int getStatusBarHeight() {
@@ -725,14 +736,14 @@ public class FloatingActionMenu {
 
         public FloatingActionMenu build() {
             return new FloatingActionMenu(actionView,
-                                          startAngle,
-                                          endAngle,
-                                          radius,
-                                          subActionItems,
-                                          animationHandler,
-                                          animated,
-                                          stateChangeListener,
-                                          systemOverlay);
+                    startAngle,
+                    endAngle,
+                    radius,
+                    subActionItems,
+                    animationHandler,
+                    animated,
+                    stateChangeListener,
+                    systemOverlay);
         }
     }
 
