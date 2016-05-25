@@ -252,6 +252,26 @@ public class FloatingActionMenu {
     }
 
     /**
+     * 隐藏
+     * @param animated
+     */
+    public void hide(boolean animated){
+        if(animated){
+            if(isOpen()){
+                close(true);
+            }
+        }
+        this.mainActionView.setVisibility(View.INVISIBLE);
+    }
+
+    /**
+     * 显示
+     */
+    public void show(){
+        this.mainActionView.setVisibility(View.VISIBLE);
+    }
+
+    /**
      * Toggles the menu
      * @param animated if true, the open/close action is executed by the current {@link MenuAnimationHandler}
      */
